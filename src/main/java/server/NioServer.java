@@ -44,14 +44,14 @@ public class NioServer {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("server error");
         }
     }
 
     static class Worker implements Runnable {
         private Selector selector;
         private String name;
-        private final ConcurrentLinkedQueue<SocketChannel> registerQueue = new ConcurrentLinkedQueue<>();
+        private ConcurrentLinkedQueue<SocketChannel> registerQueue = new ConcurrentLinkedQueue<>();
 
         public Worker(String name) throws IOException {
             this.name = name;
@@ -60,7 +60,8 @@ public class NioServer {
 
         public void register(SocketChannel sc) {
             registerQueue.offer(sc);
-            selector.wakeup(); // 唤醒阻塞在select()的线程
+            // 唤醒阻塞在select方法的selector
+            selector.wakeup();
         }
 
         @Override
@@ -91,7 +92,6 @@ public class NioServer {
                             buffer.flip();
                             // 命令以换行符分隔
                             while (buffer.hasRemaining()) {
-                                // 这里可以采用更健壮的处理方式，比如查找'\n'位置
                                 int pos = buffer.position();
                                 int limit = buffer.limit();
                                 boolean foundLine = false;
@@ -125,20 +125,17 @@ public class NioServer {
             // log.debug("{} received command: {}", name, command);
             switch (s[0]) {
                 case "PUT":
-                    // 处理 PUT 命令
                     StoreFactory.getMap().put(s[1], s[2]);
                     channel.write(charset.encode("OK\n"));
                     break;
                 case "GET":
-                    String value = StoreFactory.getMap().get(s[1]);
-                    channel.write(charset.encode((value != null ? value : "NULL") + "\n"));
+                    channel.write(charset.encode(StoreFactory.getMap().get(s[1]) + "\n"));
                     break;
                 case "DELETE":
                     StoreFactory.getMap().remove(s[1]);
                     channel.write(charset.encode("OK\n"));
                     break;
                 case "EXIT":
-                    // 只关闭当前连接，不关闭整个 worker
                     channel.close();
                     break;
                 default:
