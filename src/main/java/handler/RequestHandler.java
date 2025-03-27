@@ -19,7 +19,7 @@ public class RequestHandler extends ChannelInboundHandlerAdapter {
                 ctx.writeAndFlush("OK\n");
                 break;
             case "GET":
-                ctx.writeAndFlush(StoreFactory.getMap().get(s[1]) + '\n');
+                ctx.writeAndFlush(StoreFactory.getMap().get(s[1]) + "\n");
                 break;
             case "DELETE":
                 StoreFactory.getMap().remove(s[1]);
@@ -28,6 +28,8 @@ public class RequestHandler extends ChannelInboundHandlerAdapter {
             case "EXIT":
                 ctx.channel().close();
                 break;
+            default:
+                ctx.writeAndFlush("ERROR: Unknown command\n");
         }
     }
 }
