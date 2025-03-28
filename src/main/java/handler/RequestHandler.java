@@ -3,8 +3,13 @@ package handler;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
 import store.StoreFactory;
 
+/**
+ * 请求处理器，用于处理NettyServer中接收到的指令
+ */
+@Slf4j
 @ChannelHandler.Sharable
 public class RequestHandler extends ChannelInboundHandlerAdapter {
     @Override
