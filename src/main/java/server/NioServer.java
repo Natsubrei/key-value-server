@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 用 Java NIO 实现的键值服务器
+ * 用 Java NIO 实现的 Key-Value存储服务器
  */
 @Slf4j
 public class NioServer {

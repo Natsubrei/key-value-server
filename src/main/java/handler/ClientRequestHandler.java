@@ -9,11 +9,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * 客户端请求处理类，用于创建处理客户端请求的线程
+ */
 @Slf4j
-public class ClientHandler implements Runnable {
+public class ClientRequestHandler implements Runnable {
     private Socket clientSocket;
 
-    public ClientHandler(Socket clientSocket) {
+    public ClientRequestHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 

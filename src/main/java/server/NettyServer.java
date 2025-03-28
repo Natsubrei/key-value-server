@@ -15,7 +15,7 @@ import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 用 Netty 框架实现的键值服务器
+ * 用 Netty 框架实现的 Key-Value存储服务器
  */
 @Slf4j
 public class NettyServer {

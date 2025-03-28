@@ -1,7 +1,7 @@
 package server;
 
 import lombok.extern.slf4j.Slf4j;
-import handler.ClientHandler;
+import handler.ClientRequestHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 用 Thread Pool 实现的键值服务器
+ * 用 Thread Pool 实现的 Key-Value存储服务器
  */
 @Slf4j
 public class ThreadPoolServer {
@@ -20,7 +20,7 @@ public class ThreadPoolServer {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 // log.debug("Connection established: {}", clientSocket);
-                threadPool.execute(new ClientHandler(clientSocket));
+                threadPool.execute(new ClientRequestHandler(clientSocket));
             }
         } catch (IOException e) {
             log.error("Server error");
